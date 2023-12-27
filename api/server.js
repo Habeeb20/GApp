@@ -7,6 +7,7 @@ connectDb()
 const path = require('path')
 const cors = require('cors')
 const PORT = process.env.PORT || 4000;
+const path = require("path")
 
 
 const {logEvents, loggers} = require('./middleware/logger')
@@ -20,8 +21,12 @@ const corsOptions = require('./config/corsOptions')
 
 app.use(express.json())
 // app.use(loggers)
+const __dirname  = path.resolve()
 app.use(express.static('public'))
-
+app.use(express.static(path.join(__dirname, '/client/dist')))
+app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
 app.use("/api/workout", workout)
 app.use("/api/user", userWorkout)
 
